@@ -1,4 +1,4 @@
-# NGERPE*!* | Tweet Separation Tool
+# NGERPE! | Tweet Separation Tool for Roleplayers
 
 Sebuah tweet separator tool yang telah lama dirindukan, kini kembali menemani Anda. Website ini digunakan dari roleplayer untuk roleplayer atas dasar impulsivitas pribadi. Silakan digunakan sesukanya asal jangan dimaling tanpa izin.
 
