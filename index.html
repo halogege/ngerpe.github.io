@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NGERPE! | Tweet Separator Tool</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="pageHeader">
+    <h1><span class="title-highlight">NGERPE<i>!</i>🕶️</span></h1>
+    
+    <p class="subtitle">
+      Sebuah <i>tweet separator tool</i> yang telah lama dirindukan, kini kembali menemani Anda. Website ini digunakan dari <i>roleplayer</i> untuk <i>roleplayer</i> atas dasar impulsivitas pribadi. Silakan digunakan sesukanya asal jangan dimaling <b style="color:red;">tanpa izin.</b><br><br>
+      Terima kasih dan R.I.P 🪦 kepada OG Tweet Separator bersama: Biolbe, TwittRP, dan website lainnya yang sudah bersama kita semua. Dan terima kasih kepada OG inspo saya juga <a href="https://tweetrp.netlify.app/">TweetRP</a>, maaf saya jadi bikin baru karena nggak ada opsi em-dash :__)...
+    </p>
+
+    <p class="subtitle">
+      Jika ada masukan ataupun pertanyaan, jangan sungkan untuk <i>catch-up</i> saya via <a href="https://gege.works/#him">mana saja boleh, deh!</a>
+    </p>
+    
+    <p class="credit">
+      Made with Mercury RX impulsiveness in July 21st, 2025 by <a href="https://gege.works">Gege</a>
+    </p>
+  </div>
+
+  <div id="container">
+    <section id="options">
+      <h2>Opsi Separator</h2>
+
+      <label for="doubleSeparator">Double Separator:</label>
+      <select id="doubleSeparator">
+        <option value="no">Tidak</option>
+        <option value="yes">Ya</option>
+      </select>
+      
+      <label for="doubleSpacing">Mode Double Spasi:</label>
+      <select id="doubleSpacing">
+        <option value="no">Tidak</option>
+        <option value="yes">Ya</option>
+      </select>
+      
+      <label for="separator">Pilih Separator:</label>
+      <select id="separator">
+        <option value=">">... text &gt;</option>
+        <option value="+">... text +</option>
+        <option value="—">... text —</option>
+        <option value="&&.">... text &&.</option>
+        <option value="(+)">... text (+)</option>
+        <option value="(...)">... text (...)</option>
+        <option value="ᅠ">... text ᅠ</option>
+        <option value="custom">Pilih Sendiri</option>
+      </select>
+      
+      <div id="customSeparatorDiv" style="display:none;">
+        <label for="customSeparator">Separator Kustom:</label>
+        <input type="text" id="customSeparator" placeholder="Masukkan separator..." />
+      </div>
+
+      <label for="specialCharFormat">Special Blank Space Format (Double + Double Spasi):</label>
+      <select id="specialCharFormat">
+        <option value="1">Format 1 (single break)</option>
+        <option value="2">Format 2 (double break)</option>
+      </select>
+
+      <button id="splitBtn">Pisahkan Tweet</button>
+    </section>
+
+    <section id="textarea">
+      <textarea id="inputText" placeholder="Tulis teks di sini..."></textarea>
+      <div id="counter">0 kata, 0 karakter</div>
+    </section>
+
+    <section id="preview">
+      <h2>Preview Tweet</h2>
+      <div id="output"></div>
+    </section>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
