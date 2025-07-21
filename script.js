@@ -115,7 +115,6 @@ function splitTweets() {
   const isDouble = doubleSeparatorSelect.value === 'yes';
 
   const maxLength = 280;
-  // split by space but keep spaces as tokens (to preserve spacing)
   const words = inputText.split(/(\s+)/);
   const chunks = [];
   let currentChunk = '';
@@ -123,8 +122,7 @@ function splitTweets() {
   for (let i = 0; i < words.length; i++) {
     const word = words[i];
     const tentative = currentChunk + word;
-    // estimation length without prefix/suffix because added on render/copy
-    const estimatedLength = tentative.length + (isDouble ? 0 : 1) + 10; // safe margin
+    const estimatedLength = tentative.length + (isDouble ? 0 : 1) + 10;
 
     if (estimatedLength > maxLength) {
       if (currentChunk.trim()) {
@@ -148,17 +146,12 @@ function renderTweets({ chunks, prefix, suffix, isDouble, isDoubleSpacing, speci
     const isFirst = index === 0;
     const isLast = index === chunks.length - 1;
     let displayText = '';
-
     const isSpecialChar = prefix === SINGLE_SPACE_CHAR && suffix === SINGLE_SPACE_CHAR;
 
     if (isDouble && isDoubleSpacing && isSpecialChar) {
-      if (specialCharFormat === 1) {
-        // Format 1: prefix in first line, text, suffix in last line, no extra newlines before/after prefix/suffix
-        displayText = `${prefix}\n${chunk}\n${suffix}`;
-      } else if (specialCharFormat === 2) {
-        // Format 2: newline before prefix and after suffix too
-        displayText = `${prefix}\n\n${chunk}\n\n${suffix}`;
-      }
+      displayText = specialCharFormat === 1
+        ? `${prefix}\n${chunk}\n${suffix}`
+        : `${prefix}\n\n${chunk}\n\n${suffix}`;
     } else if (isDouble && isDoubleSpacing) {
       if (isFirst) {
         displayText = `${chunk}\n\n${suffix}`;
@@ -198,11 +191,9 @@ function renderTweets({ chunks, prefix, suffix, isDouble, isDoubleSpacing, speci
       let copyText = '';
 
       if (isDouble && isDoubleSpacing && isSpecialChar) {
-        if (specialCharFormat === 1) {
-          copyText = `${prefix}\n${chunk}\n${suffix}`;
-        } else if (specialCharFormat === 2) {
-          copyText = `${prefix}\n\n${chunk}\n\n${suffix}`;
-        }
+        copyText = specialCharFormat === 1
+          ? `${prefix}\n${chunk}\n${suffix}`
+          : `${prefix}\n\n${chunk}\n\n${suffix}`;
       } else if (isDouble && isDoubleSpacing) {
         if (isFirst) {
           copyText = `${chunk}\n\n${suffix}`;
@@ -223,12 +214,12 @@ function renderTweets({ chunks, prefix, suffix, isDouble, isDoubleSpacing, speci
         copyText = !isLast ? `${chunk} ${suffix}` : chunk;
       }
 
-  navigator.clipboard.writeText(copyText).then(() => {
-    content.classList.add('copied');
-    showToast(`Tweet ${index + 1} of ${chunks.length} copied!`);
-    setTimeout(() => content.classList.remove('copied'), 2000);
-  }).catch(() => {
-    showToast('Failed to copy to clipboard');
+      navigator.clipboard.writeText(copyText).then(() => {
+        content.classList.add('copied');
+        showToast(`Tweet ${index + 1} of ${chunks.length} copied!`);
+        setTimeout(() => content.classList.remove('copied'), 2000);
+      }).catch(() => {
+        showToast('Failed to copy to clipboard');
       });
     });
 
@@ -248,24 +239,34 @@ function splitTweetsAndRender() {
   let suffix = '';
 
   if (separatorSelect.value === 'custom') {
-  const custom = customSeparatorInput.value.trim();
-  if (isDouble) {
-    prefix = custom;
-    suffix = custom;
-  } else {
-    suffix = custom;
-  }
-} else if (separatorSelect.value === 'none') {
-  prefix = '';
-  suffix = '';
-} else {
-  prefix = selectedOption.dataset.prefix || '';
-  suffix = selectedOption.dataset.suffix || '';
-  if (!isDouble) {
-    suffix = selectedOption.value;
+    const custom = customSeparatorInput.value.trim();
+    if (isDouble) {
+      prefix = custom;
+      suffix = custom;
+    } else {
+      suffix = custom;
+    }
+  } else if (separatorSelect.value === 'none') {
     prefix = '';
+    suffix = '';
+  } else {
+    prefix = selectedOption.dataset.prefix || '';
+    suffix = selectedOption.dataset.suffix || '';
+
+    if (!isDouble) {
+      if (isDoubleSpacing && separatorSelect.value === SINGLE_SPACE_CHAR) {
+        prefix = '';
+        suffix = SINGLE_SPACE_CHAR;
+      } else if (isDoubleSpacing) {
+        prefix = '';
+        suffix = '\n\n' + selectedOption.value;
+      } else {
+        prefix = '';
+        suffix = selectedOption.value;
+      }
+    }
   }
-}
+
   const inputText = inputTextArea.value.trim();
   if (!inputText) {
     outputDiv.innerHTML = '';
@@ -297,7 +298,6 @@ doubleSpacingSelect.addEventListener('change', () => {
 customSeparatorInput.addEventListener('input', splitTweetsAndRender);
 specialCharFormatSelect.addEventListener('change', splitTweetsAndRender);
 
-// Initial population & UI state
 populateSeparatorOptions(singleSeparators);
 toggleSpecialCharFormatVisibility();
 updateCounters();
